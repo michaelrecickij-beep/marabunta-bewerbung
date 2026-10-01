@@ -1,149 +1,3 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Leader Bewerbung — Marabunta Grande</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#03080f;--bg2:#060d1a;--surface:#0a1628;--surface2:#0e1e36;
-  --border:rgba(56,120,220,0.18);--border-hi:rgba(56,120,220,0.45);
-  --blue:#2563eb;--blue-hi:#3b82f6;--blue-glow:#60a5fa;
-  --blue-soft:#93c5fd;--blue-pale:#dbeafe;
-  --white:#f8fafc;--muted:#64748b;
-}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.65;overflow-x:hidden}
-#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
-
-/* SIDEBAR */
-.sidenav{position:fixed;top:0;left:0;bottom:0;width:220px;background:rgba(6,13,26,0.97);border-right:1px solid var(--border);z-index:50;display:flex;flex-direction:column;padding:36px 0 28px;backdrop-filter:blur(20px)}
-.sidenav-logo{padding:0 28px 32px;border-bottom:1px solid var(--border);margin-bottom:28px}
-.sidenav-logo .org{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:800;letter-spacing:2px;color:var(--blue-glow);text-transform:uppercase;line-height:1.2}
-.sidenav-logo .sub{font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:var(--muted);letter-spacing:2.5px;text-transform:uppercase;margin-top:4px}
-.sidenav ul{list-style:none;flex:1}
-.sidenav ul li a{display:flex;align-items:center;gap:12px;padding:10px 28px;text-decoration:none;font-size:0.8rem;font-weight:500;color:var(--muted);letter-spacing:0.5px;border-left:2px solid transparent;transition:all 0.2s}
-.sidenav ul li a .num{font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--blue);min-width:18px}
-.sidenav ul li a:hover,.sidenav ul li a.active{color:var(--blue-pale);border-left-color:var(--blue-hi);background:rgba(37,99,235,0.07)}
-.sidenav-footer{padding:16px 28px 0;border-top:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:0.55rem;color:var(--muted);letter-spacing:1.5px;line-height:1.8}
-
-/* MAIN */
-main{margin-left:220px;position:relative;z-index:1}
-
-/* HERO */
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:80px 72px;position:relative;border-bottom:1px solid var(--border);overflow:hidden}
-.hero::after{content:'';position:absolute;right:-120px;top:50%;transform:translateY(-50%);width:500px;height:500px;background:radial-gradient(circle,rgba(37,99,235,0.12) 0%,transparent 70%);pointer-events:none}
-.hero-tag{font-family:'JetBrains Mono',monospace;font-size:0.65rem;letter-spacing:4px;color:var(--blue);text-transform:uppercase;margin-bottom:24px;opacity:0;animation:rise 0.7s 0.1s ease forwards}
-.hero-tag::before{content:'▶  ';color:var(--blue-hi)}
-.hero h1{font-family:'Syne',sans-serif;font-size:clamp(3rem,6vw,5.5rem);font-weight:800;line-height:1.0;letter-spacing:-1px;margin-bottom:8px;opacity:0;animation:rise 0.7s 0.25s ease forwards}
-.hero h1 em{font-style:normal;color:var(--blue-hi);display:block}
-.hero-divider{width:64px;height:3px;background:linear-gradient(90deg,var(--blue),var(--blue-glow));margin:28px 0;opacity:0;animation:rise 0.7s 0.4s ease forwards}
-.hero-desc{max-width:520px;font-size:1rem;color:var(--blue-soft);font-weight:300;line-height:1.8;margin-bottom:40px;opacity:0;animation:rise 0.7s 0.55s ease forwards}
-.hero-chips{display:flex;flex-wrap:wrap;gap:10px;opacity:0;animation:rise 0.7s 0.7s ease forwards}
-.chip{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);padding:8px 16px;border-radius:4px}
-.chip-label{font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
-.chip-value{font-size:0.88rem;font-weight:600;color:var(--blue-pale)}
-
-/* SECTIONS */
-.section{padding:80px 72px;border-bottom:1px solid var(--border)}
-.section-head{display:flex;align-items:baseline;gap:20px;margin-bottom:48px}
-.section-num{font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--blue);letter-spacing:3px}
-.section-title{font-family:'Syne',sans-serif;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;letter-spacing:-0.5px;color:var(--white)}
-.section-title span{color:var(--blue-hi)}
-.why-text{font-size:0.97rem;color:#94a3b8;line-height:1.85;max-width:680px;margin-bottom:36px}
-
-/* ABOUT */
-.about-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.about-item{background:var(--surface);border:1px solid var(--border);padding:20px 24px;border-top:2px solid var(--blue);transition:border-color 0.2s}
-.about-item:hover{border-top-color:var(--blue-glow)}
-.about-item .lbl{font-family:'JetBrains Mono',monospace;font-size:0.58rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
-.about-item .val{font-size:1rem;font-weight:600;color:var(--blue-pale)}
-
-/* WHY */
-.why-quote{border-left:3px solid var(--blue-hi);padding:20px 28px;background:rgba(37,99,235,0.06);font-size:1.05rem;font-style:italic;color:var(--blue-pale);line-height:1.8;margin-bottom:32px}
-.goals{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.goal{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--border);padding:14px 20px;font-size:0.9rem;font-weight:600;color:var(--blue-pale);transition:background 0.2s,border-color 0.2s}
-.goal:hover{background:var(--surface2);border-color:var(--border-hi)}
-
-/* TABLE */
-.tbl-wrap{overflow-x:auto;border:1px solid var(--border)}
-table{width:100%;border-collapse:collapse;font-size:0.88rem}
-thead th{background:var(--surface2);padding:13px 20px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:0.58rem;letter-spacing:3px;text-transform:uppercase;color:var(--blue-glow);border-bottom:1px solid var(--border);white-space:nowrap}
-tbody tr{border-bottom:1px solid var(--border);transition:background 0.15s}
-tbody tr:hover{background:rgba(37,99,235,0.06)}
-tbody td{padding:11px 20px;color:#94a3b8}
-.cat-row td{background:rgba(37,99,235,0.06);color:var(--blue-hi);font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;padding:9px 20px}
-.badge{display:inline-block;background:rgba(37,99,235,0.15);border:1px solid rgba(59,130,246,0.35);color:var(--blue-glow);font-family:'JetBrains Mono',monospace;font-size:0.65rem;padding:2px 9px;letter-spacing:1px;border-radius:2px}
-
-/* RP */
-.rp-list{display:flex;flex-direction:column;gap:16px}
-.rp-item{display:grid;grid-template-columns:64px 1fr;border:1px solid var(--border);background:var(--surface);overflow:hidden;transition:border-color 0.25s}
-.rp-item:hover{border-color:var(--border-hi)}
-.rp-num{background:rgba(37,99,235,0.12);border-right:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--blue)}
-.rp-body{padding:22px 28px}
-.rp-title{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:var(--white);margin-bottom:8px;letter-spacing:-0.3px}
-.rp-text{font-size:0.88rem;color:#94a3b8;line-height:1.75}
-
-/* CONCEPT */
-.concept-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.concept-col{border:1px solid var(--border);background:var(--surface);padding:32px 28px;position:relative;overflow:hidden;transition:border-color 0.25s}
-.concept-col::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--blue-glow),transparent)}
-.concept-col:hover{border-color:var(--border-hi)}
-.concept-letter{font-family:'Syne',sans-serif;font-size:3rem;font-weight:800;color:rgba(37,99,235,0.25);line-height:1;margin-bottom:12px}
-.concept-heading{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;color:var(--white);margin-bottom:10px}
-.concept-text{font-size:0.83rem;color:#94a3b8;line-height:1.7}
-
-/* RANKS */
-.rank-table{width:100%;border-collapse:collapse}
-.rank-table tr{border-bottom:1px solid var(--border);transition:background 0.15s}
-.rank-table tr:hover{background:rgba(37,99,235,0.05)}
-.rank-table td{padding:14px 20px}
-.rn{font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--blue);letter-spacing:2px;width:56px}
-.rname{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;color:var(--white)}
-.rdesc{font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;text-align:right}
-.rank-table tr.r-leader{background:rgba(37,99,235,0.1)}
-.rank-table tr.r-leader .rname{color:var(--blue-glow)}
-.rank-table tr.r-leader .rn{color:#fbbf24}
-.rank-table tr.r-vize{background:rgba(37,99,235,0.06)}
-.rank-table tr.r-straf .rname{color:#fca5a5}
-
-/* FOOTER */
-footer{margin-left:220px;padding:52px 72px;background:var(--bg2);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px}
-.footer-left .org-name{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;color:var(--blue-glow);letter-spacing:2px;text-transform:uppercase}
-.footer-left .sub{font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:var(--muted);letter-spacing:2px;margin-top:4px}
-.footer-motto{font-family:'Syne',sans-serif;font-size:0.9rem;font-weight:700;color:var(--blue-soft);letter-spacing:3px;text-transform:uppercase}
-
-/* ANIM */
-@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.6s ease,transform 0.6s ease}
-
-@media(max-width:900px){
-  .sidenav{display:none}main{margin-left:0}footer{margin-left:0}
-  .hero,.section{padding:60px 24px}
-  .about-grid{grid-template-columns:repeat(2,1fr)}
-  .concept-cols,.goals{grid-template-columns:1fr}
-  footer{padding:40px 24px}
-}
-</style>
-</head>
-<body>
-
-<canvas id="bg-canvas"></canvas>
-
-<nav class="sidenav">
-  <div class="sidenav-logo">
-    <div class="org">Marabunta<br>Grande</div>
-    <div class="sub">// Leader Bewerbung</div>
-  </div>
-  <ul>
-    <li><a href="#about"><span class="num">01</span>Über mich</a></li>
-    <li><a href="#why"><span class="num">02</span>Warum Leader</a></li>
-    <li><a href="#qualities"><span class="num">03</span>Qualitäten</a></li>
-    <li><a href="#rp"><span class="num">04</span>RP-Konzept</a></li>
-    <li><a href="#concept"><span class="num">05</span>Orga-Konzept</a></li>
-    <li><a href="#ranks"><span class="num">06</span>Rangfolge</a></li>
   </ul>
   <div class="sidenav-footer">Grand RP<br>Offizielles Dokument<br>ID #243336</div>
 </nav>
@@ -164,7 +18,7 @@ footer{margin-left:220px;padding:52px 72px;background:var(--bg2);border-top:1px 
   </section>
 
   <section class="section" id="about">
-    <div class="section-head reveal"><span class="section-num">01</span><h2 class="section-title">Über <span>Mich</span></h2></div>
+    <h2 class="section-title">Über <span>Mich</span></h2></div>
     <div class="about-grid reveal">
       <div class="about-item"><div class="lbl">OOC Name</div><div class="val">Marc</div></div>
       <div class="about-item"><div class="lbl">Alter (OOC)</div><div class="val">17</div></div>
@@ -176,7 +30,7 @@ footer{margin-left:220px;padding:52px 72px;background:var(--bg2);border-top:1px 
   </section>
 
   <section class="section" id="why">
-    <div class="section-head reveal"><span class="section-num">02</span><h2 class="section-title">Warum möchte ich <span>Leader werden</span></h2></div>
+   <h2 class="section-title">Warum möchte ich <span>Leader werden</span></h2></div>
     <div class="why-quote reveal">„Ich habe eine klare Vision für die Zukunft der Marabunta Grande — und die Entschlossenheit, sie umzusetzen."</div>
     <p class="why-text reveal">Ich möchte Leader der Marabunta Grande werden, weil ich die Orga nicht nur leiten, sondern von Grund auf neu aufstellen will. Das Barrio soll wieder das sein, was es einmal war: ein Ort, den man respektiert — nicht durch sinnlose Gewalt, sondern durch kluge Strukturen, konsequente Präsenz und starkes RP.</p>
     <div class="goals reveal">
@@ -188,7 +42,7 @@ footer{margin-left:220px;padding:52px 72px;background:var(--bg2);border-top:1px 
   </section>
 
   <section class="section" id="qualities">
-    <div class="section-head reveal"><span class="section-num">03</span><h2 class="section-title">Was zeichnet mich als <span>Leader aus</span></h2></div>
+    <h2 class="section-title">Was zeichnet mich als <span>Leader aus</span></h2></div>
     <p class="why-text reveal">Meine Erfahrung auf Grand RP spricht für sich. Ich habe in mehreren Organisationen nachweislich Führungsverantwortung übernommen, hohe Ränge erreicht und Strukturen mitaufgebaut.</p>
     <div class="tbl-wrap reveal">
       <table>
@@ -211,7 +65,7 @@ footer{margin-left:220px;padding:52px 72px;background:var(--bg2);border-top:1px 
   </section>
 
   <section class="section" id="rp">
-    <div class="section-head reveal"><span class="section-num">04</span><h2 class="section-title">Meine Pläne zur <span>RP-Qualität</span></h2></div>
+    <h2 class="section-title">Meine Pläne zur <span>RP-Qualität</span></h2></div>
     <div class="rp-list">
       <div class="rp-item reveal">
         <div class="rp-num">01</div>
@@ -229,7 +83,7 @@ footer{margin-left:220px;padding:52px 72px;background:var(--bg2);border-top:1px 
   </section>
 
   <section class="section" id="concept">
-    <div class="section-head reveal"><span class="section-num">05</span><h2 class="section-title">Mein Konzept für die <span>Orga</span></h2></div>
+    <h2 class="section-title">Mein Konzept für die <span>Orga</span></h2></div>
     <div class="concept-cols">
       <div class="concept-col reveal"><div class="concept-letter">V</div><div class="concept-heading">Vision</div><p class="concept-text">Die Marabunta Grande soll auf Grand RP als eine der respektiertesten Gangs wahrgenommen werden — durch Qualität, Struktur und starkes RP, nicht durch blinde Gewalt.</p></div>
       <div class="concept-col reveal"><div class="concept-letter">Z</div><div class="concept-heading">Ziele</div><p class="concept-text">Starke Barrio-Präsenz · Regelmäßige Ammus &amp; FZ-Raids · Stabile Einnahmen · Aktive Mitgliederbindung · Klare interne Kommunikation.</p></div>
@@ -238,7 +92,7 @@ footer{margin-left:220px;padding:52px 72px;background:var(--bg2);border-top:1px 
   </section>
 
   <section class="section" id="ranks">
-    <div class="section-head reveal"><span class="section-num">06</span><h2 class="section-title">Rangfolge <span>der Organisation</span></h2></div>
+    <h2 class="section-title">Rangfolge <span>der Organisation</span></h2></div>
     <div class="tbl-wrap reveal">
       <table class="rank-table">
         <tbody>
@@ -260,53 +114,4 @@ footer{margin-left:220px;padding:52px 72px;background:var(--bg2);border-top:1px 
   </section>
 </main>
 
-<footer>
-  <div class="footer-left">
-    <div class="org-name">Marabunta Grande</div>
-    <div class="sub">Bewerbung eingereicht von Marc · Shawn Petric · #243336</div>
-  </div>
-  <div class="footer-motto">Marabunta for Life.</div>
-</footer>
 
-<script>
-// Particle canvas
-const canvas=document.getElementById('bg-canvas');
-const ctx=canvas.getContext('2d');
-let W,H,dots=[];
-function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
-function initDots(){dots=[];const n=Math.floor(W*H/14000);for(let i=0;i<n;i++)dots.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.1+0.3,dx:(Math.random()-.5)*.18,dy:(Math.random()-.5)*.18,o:Math.random()*.35+.05})}
-function draw(){
-  ctx.clearRect(0,0,W,H);
-  for(let i=0;i<dots.length;i++){
-    const d=dots[i];
-    ctx.beginPath();ctx.arc(d.x,d.y,d.r,0,Math.PI*2);
-    ctx.fillStyle=`rgba(59,130,246,${d.o})`;ctx.fill();
-    d.x+=d.dx;d.y+=d.dy;
-    if(d.x<0||d.x>W)d.dx*=-1;
-    if(d.y<0||d.y>H)d.dy*=-1;
-    for(let j=i+1;j<dots.length;j++){
-      const e=dots[j],dist=Math.hypot(d.x-e.x,d.y-e.y);
-      if(dist<110){ctx.beginPath();ctx.moveTo(d.x,d.y);ctx.lineTo(e.x,e.y);
-      ctx.strokeStyle=`rgba(37,99,235,${.07*(1-dist/110)})`;ctx.lineWidth=.6;ctx.stroke()}
-    }
-  }
-  requestAnimationFrame(draw);
-}
-resize();initDots();draw();
-window.addEventListener('resize',()=>{resize();initDots()});
-
-// Scroll reveal
-const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.12});
-document.querySelectorAll('.reveal').forEach(r=>io.observe(r));
-
-// Active nav
-const secs=document.querySelectorAll('section[id]');
-const links=document.querySelectorAll('.sidenav a');
-window.addEventListener('scroll',()=>{
-  let cur='';
-  secs.forEach(s=>{if(window.scrollY>=s.offsetTop-120)cur=s.id});
-  links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')===`#${cur}`));
-});
-</script>
-</body>
-</html>
